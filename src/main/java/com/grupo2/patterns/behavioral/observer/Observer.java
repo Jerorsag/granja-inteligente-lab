@@ -1,4 +1,8 @@
 package com.grupo2.patterns.behavioral.observer;
 
-public class Observer {
+/**
+ * Patrón Observer: Interfaz Observer que recibe notificaciones
+ */
+public interface Observer {
+    void actualizar(Subject sujeto, String mensaje);
 }
