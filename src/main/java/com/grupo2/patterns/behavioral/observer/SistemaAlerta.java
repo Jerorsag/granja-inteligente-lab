@@ -29,12 +29,12 @@ public class SistemaAlerta implements Observer {
         System.out.println("🚨 ALERTA: " + alerta);
         
         // Si es crítico, tomar acción
-        if (mensaje.toLowerCase().contains("crítico") || 
-            mensaje.toLowerCase().contains("bajo") ||
-            mensaje.toLowerCase().contains("alto")) {
+        String mensajeLower = mensaje.toLowerCase();
+        if (mensajeLower.contains("crítico") || 
+            mensajeLower.contains("bajo") ||
+            mensajeLower.contains("alto")) {
             System.out.println("   ⚡ Acción requerida inmediatamente");
         }
-    }
     
     public void mostrarHistorialAlertas() {
         System.out.println("\n=== Historial de Alertas: " + nombre + " ===");
