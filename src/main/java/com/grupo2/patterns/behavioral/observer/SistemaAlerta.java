@@ -41,8 +41,10 @@ public class SistemaAlerta implements Observer {
         if (alertas.isEmpty()) {
             System.out.println("No hay alertas registradas");
         } else {
-            for (int i = 0; i < alertas.size(); i++) {
-                System.out.println((i + 1) + ". " + alertas.get(i));
+            int contador = 1;
+            for (String alerta : alertas) {
+                System.out.println(contador + ". " + alerta);
+                contador++;
             }
         }
     }
