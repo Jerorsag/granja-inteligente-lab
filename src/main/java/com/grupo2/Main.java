@@ -177,5 +177,60 @@ public class Main {
         cerdo1.alimentar(3.0);
         cerdo1.alimentar(3.0);
         cerdo1.alimentar(3.0); // Completar tratamiento
+
+        // FASE 5: INTEGRACIÓN PRÁCTICA - FLUJO COMPLETO
+        System.out.println("\n\n█████ FASE 5: INTEGRACIÓN PRÁCTICA █████");
+        System.out.println("Sistema de Alimentación Automatizada\n");
+
+        System.out.println("📋 FLUJO COMPLETO:");
+        System.out.println("1. Sensor detecta nivel bajo de alimento");
+        System.out.println("2. Factory crea animales según tipo de corral");
+        System.out.println("3. Strategy aplica algoritmo de alimentación según estación");
+        System.out.println("4. Command ejecuta acción de dispensación");
+        System.out.println("5. Facade coordina todo el proceso\n");
+
+        // Simular flujo completo
+        System.out.println("▶ Ejecutando flujo automatizado...\n");
+
+        // 1. Monitorear sensores
+        granja.monitorearCorral("Corral-Cerdos");
+
+        // 2. Aplicar estrategia según "estación"
+        System.out.println("\n▶ Aplicando estrategia de Invierno (más alimento)...");
+        granja.cambiarEstrategiaAlimentacion(new EstrategiaInvierno());
+
+        // 3. Alimentar usando la facade (integra todo)
+        granja.alimentarCorral("Corral-Cerdos");
+
+        // 4. Activar sistemas complementarios
+        granja.activarRiego("Corral-Cerdos", 20);
+
+        // FASE 6: RESUMEN FINAL
+        System.out.println("\n\n█████ FASE 6: ESTADO FINAL DEL SISTEMA █████");
+        granja.mostrarEstadoGranja();
+
+        // Resumen de patrones
+        System.out.println("\n\n╔═══════════════════════════════════════════════════════╗");
+        System.out.println("║          ✅ PATRONES IMPLEMENTADOS ✅                  ║");
+        System.out.println("╠═══════════════════════════════════════════════════════╣");
+        System.out.println("║ CREACIONALES:                                         ║");
+        System.out.println("║  ✓ Factory Method      - Creación de animales        ║");
+        System.out.println("║  ✓ Abstract Factory    - Familias de productos       ║");
+        System.out.println("║  ✓ Builder             - Construcción paso a paso    ║");
+        System.out.println("║  ✓ Singleton           - Alimentador global único    ║");
+        System.out.println("║                                                       ║");
+        System.out.println("║ ESTRUCTURALES:                                        ║");
+        System.out.println("║  ✓ Adapter             - Sensores legacy adaptados   ║");
+        System.out.println("║  ✓ Decorator           - GPS, vacunas, historial     ║");
+        System.out.println("║  ✓ Facade              - Interfaz simplificada       ║");
+        System.out.println("║                                                       ║");
+        System.out.println("║ COMPORTAMENTALES:                                     ║");
+        System.out.println("║  ✓ Observer            - Sistema de alertas          ║");
+        System.out.println("║  ✓ Strategy            - Estrategias de alimentación ║");
+        System.out.println("║  ✓ Command             - Operaciones encapsuladas    ║");
+        System.out.println("║  ✓ State               - Estados de salud            ║");
+        System.out.println("╚═══════════════════════════════════════════════════════╝");
+
+        System.out.println("\n🎉 ¡Sistema de Granja Inteligente completamente funcional! 🎉\n");
     }
 }
