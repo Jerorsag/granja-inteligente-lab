@@ -6,6 +6,10 @@ import com.grupo2.patterns.creational.builder.AnimalDirector;
 import com.grupo2.patterns.creational.factory.AbstractAnimalFactory;
 import com.grupo2.patterns.creational.factory.VacaLecheraFactory;
 import com.grupo2.patterns.creational.singleton.AlimentadorGlobal;
+import com.grupo2.patterns.structural.adapter.SensorAdapter;
+import com.grupo2.patterns.structural.adapter.SensorLegacy;
+import com.grupo2.patterns.structural.decorator.AnimalConGPS;
+import com.grupo2.patterns.structural.decorator.AnimalConVacuna;
 import com.grupo2.patterns.structural.facade.GranjaFacade;
 
 /**
@@ -19,6 +23,11 @@ import com.grupo2.patterns.structural.facade.GranjaFacade;
  * - Abstract Factory: Familias de productos (animales + alimento + entorno)
  * - Builder: Construcción paso a paso de animales
  * - Singleton: Sistema de alimentación global único
+ *
+ * * ESTRUCTURALES:
+ *  * - Adapter: Adaptación de sensores legacy
+ *  * - Decorator: Características adicionales a animales (GPS, vacunas, historial)
+ *  * - Facade: Interfaz simplificada para el sistema completo
  */
 public class Main {
     public static void main(String[] args) {
@@ -73,5 +82,26 @@ public class Main {
         // 2.4 SINGLETON
         System.out.println("\n--- 2.4 Singleton: Sistema de alimentación único ---");
         System.out.println("✓ AlimentadorGlobal es único en toda la aplicación");
+
+        // FASE 3: PATRONES ESTRUCTURALES
+        System.out.println("\n\n█████ FASE 3: PATRONES ESTRUCTURALES █████\n");
+
+        // 3.1 ADAPTER
+        System.out.println("--- 3.1 Adapter: Sensor Legacy adaptado ---");
+        SensorLegacy sensorAntiguo = new SensorLegacy("OLD-001", "Almacén Principal");
+        SensorAdapter sensorAdaptado = new SensorAdapter(sensorAntiguo);
+        sensorAdaptado.agregarObservador(granja.getSistemaAlerta());
+        sensorAdaptado.tomarLectura();
+
+        // 3.2 DECORATOR
+        System.out.println("\n--- 3.2 Decorator: Características adicionales ---");
+        Animal vacaConGPS = new AnimalConGPS(vaca1);
+        Animal vacaConGPSYVacuna = new AnimalConVacuna(vacaConGPS, "Fiebre Aftosa");
+        System.out.println("\n✓ Vaca decorada con GPS y Vacuna:");
+        vacaConGPSYVacuna.mostrarInfo();
+
+        // 3.3 FACADE
+        System.out.println("\n--- 3.3 Facade: Ya en uso desde el inicio ---");
+        System.out.println("✓ GranjaFacade simplifica toda la interacción con subsistemas");
     }
 }
