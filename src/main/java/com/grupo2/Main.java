@@ -1,6 +1,16 @@
 package com.grupo2;
 
 import com.grupo2.entity.animales.Animal;
+import com.grupo2.entity.sensores.SensorNivelAlimento;
+import com.grupo2.patterns.behavioral.command.Command;
+import com.grupo2.patterns.behavioral.command.ControladorComandos;
+import com.grupo2.patterns.behavioral.command.EncenderRiegoCommand;
+import com.grupo2.patterns.behavioral.command.RegistrarEventoCommand;
+import com.grupo2.patterns.behavioral.state.EstadoEnfermo;
+import com.grupo2.patterns.behavioral.strategy.EstrategiaAhorro;
+import com.grupo2.patterns.behavioral.strategy.EstrategiaAlimentacion;
+import com.grupo2.patterns.behavioral.strategy.EstrategiaInvierno;
+import com.grupo2.patterns.behavioral.strategy.EstrategiaVerano;
 import com.grupo2.patterns.creational.builder.AnimalBuilder;
 import com.grupo2.patterns.creational.builder.AnimalDirector;
 import com.grupo2.patterns.creational.factory.AbstractAnimalFactory;
@@ -28,6 +38,12 @@ import com.grupo2.patterns.structural.facade.GranjaFacade;
  *  * - Adapter: Adaptación de sensores legacy
  *  * - Decorator: Características adicionales a animales (GPS, vacunas, historial)
  *  * - Facade: Interfaz simplificada para el sistema completo
+ *
+ *   * COMPORTAMENTALES:
+ *  * - Observer: Sensores notifican cambios al sistema de alertas
+ *  * - Strategy: Diferentes estrategias de alimentación según estación
+ *  * - Command: Encapsulación de operaciones (dispensar, regar, registrar)
+ *  * - State: Estados de salud de animales (sano, enfermo, en tratamiento)
  */
 public class Main {
     public static void main(String[] args) {
@@ -103,5 +119,63 @@ public class Main {
         // 3.3 FACADE
         System.out.println("\n--- 3.3 Facade: Ya en uso desde el inicio ---");
         System.out.println("✓ GranjaFacade simplifica toda la interacción con subsistemas");
+
+        // FASE 4: PATRONES COMPORTAMENTALES
+        System.out.println("\n\n█████ FASE 4: PATRONES COMPORTAMENTALES █████\n");
+
+        // 4.1 OBSERVER
+        System.out.println("--- 4.1 Observer: Sensores detectan nivel bajo ---");
+        SensorNivelAlimento sensor = granja.getSensorAlimento("Corral-Cerdos");
+        sensor.setNivel(15.0); // Simular nivel bajo (umbral es 20%)
+
+        // 4.2 STRATEGY
+        System.out.println("\n--- 4.2 Strategy: Cambiar estrategia de alimentación ---");
+
+        // Estrategia de Invierno
+        EstrategiaAlimentacion estrategiaInvierno = new EstrategiaInvierno();
+        granja.cambiarEstrategiaAlimentacion(estrategiaInvierno);
+        granja.alimentarCorral("Corral-Cerdos");
+
+        // Cambiar a Estrategia de Verano
+        EstrategiaAlimentacion estrategiaVerano = new EstrategiaVerano();
+        granja.cambiarEstrategiaAlimentacion(estrategiaVerano);
+        granja.alimentarCorral("Corral-Vacas");
+
+        // Estrategia de Ahorro
+        EstrategiaAlimentacion estrategiaAhorro = new EstrategiaAhorro();
+        granja.cambiarEstrategiaAlimentacion(estrategiaAhorro);
+        granja.alimentarCorral("Corral-Gallinas");
+
+        // 4.3 COMMAND
+        System.out.println("\n--- 4.3 Command: Ejecutar y deshacer comandos ---");
+        ControladorComandos controlador = granja.getControladorComandos();
+
+        // Programar comandos
+        Command registrarEvento = new RegistrarEventoCommand("Mantenimiento de corrales", "Corral-Cerdos");
+        controlador.programarComando(registrarEvento);
+
+        Command activarRiego = new EncenderRiegoCommand("Zona-Norte", 30);
+        controlador.programarComando(activarRiego);
+
+        // Ejecutar comandos pendientes
+        controlador.ejecutarComandosPendientes();
+
+        // Deshacer último comando
+        controlador.deshacerUltimo();
+
+        // 4.4 STATE
+        System.out.println("\n--- 4.4 State: Estados de salud de animales ---");
+        System.out.println("\n• Animal sano:");
+        cerdo1.mostrarInfo();
+
+        System.out.println("\n• Cambiar a estado enfermo:");
+        cerdo1.cambiarEstado(new EstadoEnfermo());
+        cerdo1.alimentar(3.0);
+
+        System.out.println("\n• Aplicar tratamiento:");
+        cerdo1.getEstadoSalud().aplicarTratamiento(cerdo1);
+        cerdo1.alimentar(3.0);
+        cerdo1.alimentar(3.0);
+        cerdo1.alimentar(3.0); // Completar tratamiento
     }
 }
