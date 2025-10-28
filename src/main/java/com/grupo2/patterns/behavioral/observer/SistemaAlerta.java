@@ -25,17 +25,18 @@ public class SistemaAlerta implements Observer {
         String timestamp = LocalDateTime.now().format(formatter);
         String alerta = "[" + timestamp + "] " + nombre + " - " + mensaje;
         alertas.add(alerta);
-        
+
         System.out.println("🚨 ALERTA: " + alerta);
-        
+
         // Si es crítico, tomar acción
         String mensajeLower = mensaje.toLowerCase();
-        if (mensajeLower.contains("crítico") || 
-            mensajeLower.contains("bajo") ||
-            mensajeLower.contains("alto")) {
+        if (mensajeLower.contains("crítico") ||
+                mensajeLower.contains("bajo") ||
+                mensajeLower.contains("alto")) {
             System.out.println("   ⚡ Acción requerida inmediatamente");
         }
-    
+    }
+
     public void mostrarHistorialAlertas() {
         System.out.println("\n=== Historial de Alertas: " + nombre + " ===");
         if (alertas.isEmpty()) {
