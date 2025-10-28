@@ -7,6 +7,7 @@ import com.grupo2.entity.sensores.SensorTemperatura;
 import com.grupo2.patterns.behavioral.command.Command;
 import com.grupo2.patterns.behavioral.command.ControladorComandos;
 import com.grupo2.patterns.behavioral.command.DispensarAlimentoCommand;
+import com.grupo2.patterns.behavioral.command.EncenderRiegoCommand;
 import com.grupo2.patterns.behavioral.observer.SistemaAlerta;
 import com.grupo2.patterns.behavioral.strategy.EstrategiaAlimentacion;
 import com.grupo2.patterns.creational.factory.AnimalFactoryImpl;
@@ -129,5 +130,90 @@ public class GranjaFacade {
         if (sensoresAlimento.containsKey(corral)) {
             sensoresAlimento.get(corral).rellenar();
         }
+    }
+
+    /**
+     * Activar riego en una zona
+     */
+    public void activarRiego(String zona, int duracion) {
+        System.out.println("\n💧 ACTIVANDO SISTEMA DE RIEGO");
+        Command comandoRiego = new EncenderRiegoCommand(zona, duracion);
+        controladorComandos.ejecutarComando(comandoRiego);
+    }
+
+    /**
+     * Monitorear todos los sensores de un corral
+     */
+    public void monitorearCorral(String corral) {
+        System.out.println("\n📊 MONITOREANDO CORRAL: " + corral);
+
+        if (sensoresAlimento.containsKey(corral)) {
+            sensoresAlimento.get(corral).tomarLectura();
+        }
+
+        if (sensoresTemperatura.containsKey(corral)) {
+            sensoresTemperatura.get(corral).tomarLectura();
+        }
+
+        if (sensoresHumedad.containsKey(corral)) {
+            sensoresHumedad.get(corral).tomarLectura();
+        }
+    }
+
+    /**
+     * Cambiar estrategia de alimentación
+     */
+    public void cambiarEstrategiaAlimentacion(EstrategiaAlimentacion nuevaEstrategia) {
+        this.estrategiaActual = nuevaEstrategia;
+        System.out.println("\n🔄 Estrategia de alimentación cambiada:");
+        System.out.println("   " + nuevaEstrategia.obtenerDescripcion());
+        System.out.println("   Frecuencia: " + nuevaEstrategia.calcularFrecuencia() + " veces/día");
+    }
+
+    /**
+     * Mostrar estado completo de la granja
+     */
+    public void mostrarEstadoGranja() {
+        System.out.println("\n╔══════════════════════════════════════════╗");
+        System.out.println("║     ESTADO GENERAL DE LA GRANJA          ║");
+        System.out.println("╚══════════════════════════════════════════╝");
+
+        System.out.println("\n📍 CORRALES:");
+        for (String corral : corrales.keySet()) {
+            List<Animal> animales = corrales.get(corral);
+            System.out.println("  • " + corral + ": " + animales.size() + " animales");
+        }
+
+        alimentador.mostrarEstadisticas();
+
+        if (estrategiaActual != null) {
+            System.out.println("\n🔄 Estrategia Actual:");
+            System.out.println("   " + estrategiaActual.obtenerDescripcion());
+        }
+
+        controladorComandos.mostrarHistorial();
+        sistemaAlerta.mostrarHistorialAlertas();
+    }
+
+    /**
+     * Obtener animales de un corral
+     */
+    public List<Animal> getAnimalesCorral(String corral) {
+        return corrales.getOrDefault(corral, new ArrayList<>());
+    }
+
+    /**
+     * Obtener sensor de alimento de un corral
+     */
+    public SensorNivelAlimento getSensorAlimento(String corral) {
+        return sensoresAlimento.get(corral);
+    }
+
+    public ControladorComandos getControladorComandos() {
+        return controladorComandos;
+    }
+
+    public SistemaAlerta getSistemaAlerta() {
+        return sistemaAlerta;
     }
 }
